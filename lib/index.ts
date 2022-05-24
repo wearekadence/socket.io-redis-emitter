@@ -11,8 +11,6 @@ import type {
 
 const debug = debugModule("socket.io-emitter");
 
-const UID = "emitter";
-
 /**
  * Request types, for messages between nodes
  */
@@ -216,7 +214,6 @@ export class Emitter<EmitEvents extends EventsMap = DefaultEventsMap> {
     }
 
     const request = JSON.stringify({
-      uid: UID,
       type: RequestType.SERVER_SIDE_EMIT,
       data: args,
     });
@@ -366,7 +363,7 @@ export class BroadcastOperator<EmitEvents extends EventsMap>
       except: [...this.exceptRooms],
     };
 
-    const msg = msgpack.encode([UID, packet, opts]);
+    const msg = msgpack.encode([packet, opts]);
     let channel = this.broadcastOptions.broadcastChannel;
     if (this.rooms && this.rooms.size === 1) {
       channel += this.rooms.keys().next().value + "#";
